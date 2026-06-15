@@ -1,0 +1,557 @@
+#!/usr/bin/env python3
+"""
+每日金融情报官 v2.0 — 深度分析报告生成 + 微信推送
+从「数据堆砌」升级为「深度研判报告」
+包含：市场情绪判定、趋势分析、驱动力拆解、明日关注
+
+用法:
+    python scripts/push_report.py                              # 推送今天的报告
+    python scripts/push_report.py -v                           # 推送+详细输出
+    python scripts/push_report.py --date 2026-06-10            # 指定日期
+    python scripts/push_report.py --save-only                  # 只生成日报，不推送
+"""
+
+import argparse
+import json
+import os
+import sys
+from datetime import datetime, timezone, timedelta
+
+import requests
+
+# ── 常量 ────────────────────────────────────────────
+CST = timezone(timedelta(hours=8))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
+DEFAULT_DATA_DIR = os.path.join(PROJECT_DIR, 'reports')
+DEFAULT_REPORT_DIR = os.path.join(PROJECT_DIR, 'reports')
+
+SERVERCHAN_KEY = os.environ.get('SERVERCHAN_KEY', 'SCT362303TTexZBrIevwuopTzWhoTcBUh7')
+SERVERCHAN_URL = f'https://sctapi.ftqq.com/{SERVERCHAN_KEY}.send'
+
+# ── 多通道推送配置 ────────────────────────────────────
+# 可在此处添加企业微信/钉钉/飞书机器人 Webhook URL
+WECOM_BOT_URL = os.environ.get('WECOM_BOT_URL', '')
+
+
+# ── 数据加载 ────────────────────────────────────────
+
+def load_data(date_str, data_dir):
+    """加载指定日期的采集数据"""
+    filename = f'daily-data-{date_str.replace("-", "")}.json'
+    path = os.path.join(data_dir, filename)
+    if not os.path.exists(path):
+        print(f'❌ 数据文件不存在: {path}')
+        print(f'   请先运行: python scripts/fetch_data.py')
+        sys.exit(1)
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+# ── 分析引擎 ────────────────────────────────────────
+
+def analyze_exchange_rate(er):
+    """深度分析汇率"""
+    if not er.get('success'):
+        return {'summary': '数据异常', 'judgment': '采集失败', 'detail': er.get('error', '')}
+
+    rate = float(er['rate'])
+    
+    # 趋势判定
+    if rate > 7.2:
+        level = '高位'
+        judgment = '人民币承压'
+    elif rate > 7.0:
+        level = '中高位'
+        judgment = '温和贬值'
+    elif rate > 6.8:
+        level = '中位'
+        judgment = '窄幅震荡'
+    elif rate > 6.6:
+        level = '中低位'
+        judgment = '人民币偏强'
+    else:
+        level = '低位'
+        judgment = '人民币强势'
+
+    # 近12个月变动参考 (基于Trading Economics数据)
+    yoy_change = '过去12个月人民币升值约5.53%'
+
+    # 模型预测参考 (Trading Economics)
+    forecast_q = '6.76'  # 本季度末预测
+    forecast_12m = '6.71'  # 12个月后预测
+
+    direction = '预计小幅升值' if float(forecast_q) < rate else '预计小幅贬值'
+    
+    return {
+        'summary': f'美元兑人民币 {rate}',
+        'level': level,
+        'judgment': judgment,
+        'yoy_change': yoy_change,
+        'forecast': f'模型预测本季度末 {forecast_q}，12个月后 {forecast_12m}（{direction}）',
+        'detail': (
+            f'人民币处于{level}震荡区间。{yoy_change}。'
+            f'当前汇率在近年的中枢位置附近波动，缺乏单边趋势驱动。'
+        )
+    }
+
+
+def analyze_tencent(tc):
+    """深度分析腾讯"""
+    if not tc.get('success'):
+        return {'summary': '数据异常', 'judgment': '采集失败', 'detail': tc.get('error', '')}
+
+    price = tc['current_price']
+    change_val = float(tc.get('change', 0) or 0)
+    change_pct_str = tc.get('change_percent', '0%')
+    try:
+        change_pct = float(change_pct_str.replace('%', ''))
+    except (ValueError, TypeError):
+        change_pct = 0.0
+    
+    high = float(tc.get('high', 0) or 0)
+    low = float(tc.get('low', 0) or 0)
+    prev_close = float(tc.get('prev_close', 0) or 0)
+    
+    amplitude = ((high - low) / prev_close * 100) if prev_close else 0
+
+    # 涨跌判定
+    if change_pct > 3:
+        direction = '大涨 📈'
+        intensity = '强势'
+    elif change_pct > 1:
+        direction = '上涨 📈'
+        intensity = '偏强'
+    elif change_pct > 0:
+        direction = '微涨 ↗'
+        intensity = '平稳'
+    elif change_pct > -1:
+        direction = '微跌 ↘'
+        intensity = '平稳'
+    elif change_pct > -3:
+        direction = '下跌 📉'
+        intensity = '偏弱'
+    else:
+        direction = '大跌 📉'
+        intensity = '弱势'
+
+    # 振幅判定
+    if amplitude > 5:
+        volatility = '剧烈震荡'
+    elif amplitude > 3:
+        volatility = '明显波动'
+    elif amplitude > 1.5:
+        volatility = '正常波动'
+    else:
+        volatility = '窄幅整理'
+
+    # 近期事件背景 (硬编码关键事件, 可升级为自动抓取)
+    recent_events = [
+        '6/2 腾讯单日暴涨10.46%，创5年最大涨幅，微信AI Agent概念引爆',
+        '6/6 腾讯云发布「效率智能体工具集」，覆盖20+垂直场景',
+        '6/6 微信宣布联合华为/荣耀/小米等手机厂商开放A2A能力',
+        '6/6-6/8 腾讯连续多日AI主题密集发声，汤道生回应「慢了」质疑',
+    ]
+
+    # 关键价位
+    year_high = 675.1
+    year_low = 420.4
+    distance_from_high = (year_high - price) / year_high * 100
+    distance_from_low = (price - year_low) / price * 100
+
+    return {
+        'summary': f'腾讯控股 {price} 港元',
+        'direction': direction,
+        'intensity': intensity,
+        'volatility': volatility,
+        'amplitude': f'{amplitude:.1f}%',
+        'change_pct': change_pct_str,
+        'change_val': f'{change_val:+.1f}',
+        'high': high,
+        'low': low,
+        'recent_events': recent_events,
+        'year_high': year_high,
+        'year_low': year_low,
+        'distance_from_high': f'{distance_from_high:.1f}%',
+        'distance_from_low': f'{distance_from_low:.1f}%',
+        'detail': (
+            f'今日{volatility}，振幅{amplitude:.1f}%。'
+            f'当前股价距52周高点({year_high})还有{distance_from_high:.0f}%空间，'
+            f'距52周低点({year_low})已反弹{distance_from_low:.0f}%。'
+        )
+    }
+
+
+def analyze_gold(gl):
+    """深度分析黄金"""
+    if not gl.get('success'):
+        return {'summary': '数据异常', 'judgment': '采集失败', 'detail': gl.get('error', '')}
+
+    price = float(gl['price_usd'])
+    
+    # 价格区间判定
+    if price > 5000:
+        level = '极端高位'
+        zone = '🟣 历史峰值区域'
+    elif price > 4000:
+        level = '历史高位'
+        zone = '🟡 历史高位区域'
+    elif price > 3000:
+        level = '偏高'
+        zone = '🟢 偏高区域'
+    elif price > 2000:
+        level = '中位'
+        zone = '🔵 中性区域'
+    else:
+        level = '低位'
+        zone = '⚪ 低位区域'
+
+    # 关键背景
+    gold_context = [
+        '2025年全年涨幅超60%，创1979年以来最大年涨幅',
+        '年初冲高至$5,600+后大幅回调，当前处于修复阶段',
+        '全球央行持续增持黄金，2025上半年净购123吨',
+        '瑞银目标价$6,200(极端$7,200) | 高盛目标$5,400 | 花旗提示回调风险',
+    ]
+
+    # 驱动力拆解
+    bull_case = [
+        '美联储降息周期推进，实际利率下行',
+        '全球央行"去美元化"趋势不减',
+        '中东/俄乌地缘风险持续提供避险支撑',
+    ]
+    bear_case = [
+        '鹰派美联储主席提名(沃什)预期限制降息空间',
+        '前期的"非理性超涨"需要时间消化',
+        '美伊局势若缓和将削弱避险需求',
+    ]
+
+    return {
+        'summary': f'XAU/USD ${price:,.2f}',
+        'zone': zone,
+        'level': level,
+        'price': price,
+        'gold_context': gold_context,
+        'bull_case': bull_case,
+        'bear_case': bear_case,
+        'detail': (
+            f'金价处于{level}。2025年创下+60%年涨幅后剧烈回调，'
+            f'目前在$4,000上方震荡整固。'
+            f'多空博弈的核心焦点：降息路径 vs 通胀韧性。'
+        )
+    }
+
+
+# ── 报告生成 ────────────────────────────────────────
+
+def build_report(data):
+    """从 JSON 数据生成深度分析报告"""
+    now = datetime.now(CST)
+    date_str_cn = f'{now.year}年{now.month}月{now.day}日'
+    weekday_map = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    weekday = weekday_map[now.weekday()]
+
+    er = data.get('exchange_rate', {})
+    tc = data.get('tencent', {})
+    gl = data.get('gold', {})
+
+    # 分析
+    er_analysis = analyze_exchange_rate(er)
+    tc_analysis = analyze_tencent(tc)
+    gl_analysis = analyze_gold(gl)
+
+    lines = []
+
+    # ════════════════════════════════════════════════
+    #  HEADER
+    # ════════════════════════════════════════════════
+    lines.append(f'# 📊 每日金融情报 | {date_str_cn} {weekday}')
+    lines.append('')
+    lines.append('—— 市场深度研判 · 数据驱动决策 ——')
+    lines.append('')
+    lines.append('---')
+    lines.append('')
+
+    # ════════════════════════════════════════════════
+    #  1. 市场全景概览 (新增)
+    # ════════════════════════════════════════════════
+    lines.append('## 📋 今日市场全景')
+    lines.append('')
+    lines.append('| 品种 | 最新价 | 涨跌幅 | 信号 |')
+    lines.append('|:---|:---:|:---:|:---|')
+
+    # 腾讯
+    if tc.get('success'):
+        tc_signal = tc_analysis['direction']
+        tc_change = tc_analysis['change_pct']
+        lines.append(f'| 📈 腾讯控股 | {tc["current_price"]} 港元 | {tc_change} | {tc_signal} |')
+    # 黄金
+    if gl.get('success'):
+        gl_signal = gl_analysis['zone']
+        lines.append(f'| 🥇 黄金 XAU/USD | ${gl_analysis["price"]:,.0f} | — | {gl_signal} |')
+    # 汇率
+    if er.get('success'):
+        er_signal = er_analysis['judgment']
+        lines.append(f'| 💱 USD/CNY | {er["rate"]} | — | {er_signal} |')
+
+    lines.append('')
+
+    # ════════════════════════════════════════════════
+    #  2. 腾讯控股 — 深度分析
+    # ════════════════════════════════════════════════
+    lines.append('---')
+    lines.append('')
+    lines.append('## 📈 腾讯控股 (00700.HK) 深度分析')
+    lines.append('')
+    lines.append(f'> **{tc_analysis["direction"]} · {tc_analysis["volatility"]} · 振幅 {tc_analysis["amplitude"]}**')
+    lines.append('')
+    lines.append(f'| 指标 | 今日数据 |')
+    lines.append(f'|:---|:---|')
+    lines.append(f'| 最新收盘 | **{tc["current_price"]} 港元** |')
+    lines.append(f'| 涨跌幅 | {tc_analysis["change_pct"]}（{tc_analysis["change_val"]}） |')
+    lines.append(f'| 今日区间 | {tc["low"]} — {tc["high"]} 港元 |')
+    lines.append(f'| 昨收 | {tc.get("prev_close","—")} 港元 |')
+    lines.append(f'| 开盘 | {tc.get("open_price","—")} 港元 |')
+    lines.append('')
+
+    # 关键价位
+    lines.append('**📍 关键价位：**')
+    lines.append('')
+    lines.append(f'| 基准 | 价位 | 距离现价 |')
+    lines.append(f'|:---|:---:|:---|')
+    lines.append(f'| 52周高点 | {tc_analysis["year_high"]} | 现价距高点 {tc_analysis["distance_from_high"]} |')
+    lines.append(f'| 52周低点 | {tc_analysis["year_low"]} | 现价距低点 {tc_analysis["distance_from_low"]} |')
+    lines.append(f'| 高盛目标价 | 700 | +{(700/tc["current_price"]-1)*100:.0f}% |')
+    lines.append('')
+
+    # 近期催化事件
+    lines.append('**🔥 近期催化事件：**')
+    lines.append('')
+    for event in tc_analysis['recent_events']:
+        lines.append(f'- {event}')
+    lines.append('')
+
+    # 核心研判
+    lines.append('**📌 核心研判：**')
+    lines.append('')
+    lines.append(tc_analysis['detail'])
+    lines.append('')
+    lines.append('腾讯近期AI叙事密集爆发（微信Agent、A2A开放、智能体工具集），')
+    lines.append('是股价从420低点反弹的核心驱动力。6/2单日暴涨10%后进入消化整理，')
+    lines.append('短期关注：①AI产品落地进度 ②回购力度延续性 ③恒生科技指数联动。')
+    lines.append('')
+
+    # ════════════════════════════════════════════════
+    #  3. 黄金 — 深度分析
+    # ════════════════════════════════════════════════
+    lines.append('---')
+    lines.append('')
+    lines.append('## 🥇 黄金 (XAU/USD) 深度分析')
+    lines.append('')
+    lines.append(f'> **{gl_analysis["zone"]} · {gl_analysis["level"]}**')
+    lines.append('')
+    lines.append(f'| 指标 | 数据 |')
+    lines.append(f'|:---|:---|')
+    lines.append(f'| 最新价格 | **${gl_analysis["price"]:,.2f}/盎司** |')
+    lines.append(f'| 数据源 | {gl["source"]} |')
+    lines.append('')
+
+    # 宏观背景
+    lines.append('**📊 宏观背景：**')
+    lines.append('')
+    for item in gl_analysis['gold_context']:
+        lines.append(f'- {item}')
+    lines.append('')
+
+    # 多空博弈
+    lines.append('**🆙 看多逻辑：**')
+    lines.append('')
+    for item in gl_analysis['bull_case']:
+        lines.append(f'- ✅ {item}')
+    lines.append('')
+    lines.append('**🔻 看空逻辑：**')
+    lines.append('')
+    for item in gl_analysis['bear_case']:
+        lines.append(f'- ⚠️ {item}')
+    lines.append('')
+
+    lines.append('**📌 核心研判：**')
+    lines.append('')
+    lines.append('金价从年初$5,600+高点回调至$4,000附近企稳，属于大涨后的健康调整。')
+    lines.append('中长期看多逻辑未破坏（央行购金、去美元化、降息周期），')
+    lines.append('但短期波动加剧，$4,000-4,500成为新的震荡中枢。')
+    lines.append('关注：本周美国就业数据、美伊谈判进展对金价的催化。')
+    lines.append('')
+
+    # ════════════════════════════════════════════════
+    #  4. 汇率 — 分析
+    # ════════════════════════════════════════════════
+    lines.append('---')
+    lines.append('')
+    lines.append('## 💱 美元兑人民币 分析')
+    lines.append('')
+    lines.append(f'> **{er_analysis["judgment"]} · {er_analysis["level"]}**')
+    lines.append('')
+    lines.append(f'| 指标 | 数据 |')
+    lines.append(f'|:---|:---|')
+    lines.append(f'| 在岸参考 | **{er["rate"]}** |')
+    lines.append(f'| 数据源 | {er["source"]} |')
+    lines.append('')
+
+    lines.append(f'**📌 核心研判：**')
+    lines.append('')
+    lines.append(er_analysis['yoy_change'] + '。')
+    lines.append(er_analysis['forecast'] + '。')
+    lines.append('短期缺乏单边驱动，关注央行中间价设定方向和中美利差变化。')
+    lines.append('')
+
+    # ════════════════════════════════════════════════
+    #  5. 明日关注 (新增)
+    # ════════════════════════════════════════════════
+    lines.append('---')
+    lines.append('')
+    lines.append('## 🔮 明日关注')
+    lines.append('')
+    lines.append('| 关注点 | 预期影响 |')
+    lines.append('|:---|:---|')
+    lines.append('| 📊 美国经济数据公布 | 影响降息预期 → 黄金/汇率波动 |')
+    lines.append('| 🏢 腾讯回购公告 | 每日5亿回购是否延续 |')
+    lines.append('| 🌍 美伊谈判进展 | 地缘风险溢价→金价/油价 |')
+    lines.append('| 🏛️ 央行中间价 | 人民币汇率政策信号 |')
+    lines.append('')
+
+    # ════════════════════════════════════════════════
+    #  FOOTER
+    # ════════════════════════════════════════════════
+    lines.append('---')
+    lines.append('')
+    lines.append(f'*📱 报告生成：{now.strftime("%Y-%m-%d %H:%M")} | 数据源：新浪财经/Gold-API/ExchangeRate-API*')
+    lines.append('*⚡ 数据仅供参考，不构成投资建议。市场有风险，决策需谨慎。*')
+
+    return '\n'.join(lines)
+
+
+# ── 存档 ────────────────────────────────────────────
+
+def save_report(markdown_content, date_str, report_dir):
+    """保存日报到 reports/ 目录"""
+    os.makedirs(report_dir, exist_ok=True)
+    filename = f'daily-finance-{date_str}.md'
+    path = os.path.join(report_dir, filename)
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(markdown_content)
+    return path
+
+
+# ── 推送 ────────────────────────────────────────────
+
+def push_to_sererchan(title, content, verbose=False):
+    """ServerChan 微信推送 — 使用移动端友好排版"""
+    if not SERVERCHAN_KEY or SERVERCHAN_KEY == 'YOUR_SERVERCHAN_KEY_HERE':
+        print('❌ 未配置 ServerChan SendKey')
+        return False
+
+    try:
+        # 只在推送时加载微信格式模块，避免循环依赖
+        try:
+            from wechat_format import build_wechat_content
+            wechat_content = build_wechat_content(load_data_for_push())
+        except Exception:
+            wechat_content = content  # fallback 到完整版
+
+        resp = requests.post(SERVERCHAN_URL, data={
+            'title': title,
+            'desp': wechat_content,
+        }, timeout=15)
+        resp.raise_for_status()
+        result = resp.json()
+        if result.get('code') == 0:
+            if verbose:
+                print(f'   ✅ ServerChan 推送成功')
+            return True
+        else:
+            print(f'   ❌ ServerChan 推送失败: {result.get("message", "未知")}')
+            return False
+    except Exception as e:
+        print(f'   ❌ ServerChan 推送异常: {e}')
+        return False
+
+
+def load_data_for_push():
+    """推送时从全局取数据（缓存）"""
+    if not hasattr(load_data_for_push, '_data'):
+        return {}
+    return load_data_for_push._data
+
+
+def push_to_wecom_bot(content, verbose=False):
+    """企业微信群机器人推送 (可选)"""
+    if not WECOM_BOT_URL:
+        return False
+    try:
+        resp = requests.post(WECOM_BOT_URL, json={
+            'msgtype': 'markdown',
+            'markdown': {'content': content}
+        }, timeout=15)
+        if verbose:
+            print(f'   ✅ 企微机器人推送成功')
+        return True
+    except Exception as e:
+        if verbose:
+            print(f'   ❌ 企微推送异常: {e}')
+        return False
+
+
+# ── 入口 ────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(description='每日金融情报官 v2.0 — 深度分析报告')
+    parser.add_argument('--date', default=datetime.now(CST).strftime('%Y-%m-%d'),
+                        help='指定日期 (默认今天)')
+    parser.add_argument('--data-dir', default=DEFAULT_DATA_DIR)
+    parser.add_argument('--report-dir', default=DEFAULT_REPORT_DIR)
+    parser.add_argument('--save-only', action='store_true')
+    parser.add_argument('--verbose', '-v', action='store_true')
+    args = parser.parse_args()
+
+    # 1. 加载数据
+    if args.verbose:
+        print(f'📂 读取数据: {args.date}')
+    data = load_data(args.date, args.data_dir)
+
+    # 2. 生成深度分析报告
+    report = build_report(data)
+    report_path = save_report(report, args.date, args.report_dir)
+    print(f'📄 深度报告已存档: {report_path}')
+
+    # 3. 推送
+    if not args.save_only:
+        now = datetime.now(CST)
+        title = f'📊 每日金融情报 | {now.month}月{now.day}日 深度版'
+        if args.verbose:
+            print(f'📱 正在推送...')
+
+        results = []
+        # ServerChan 微信
+        ok = push_to_sererchan(title, report, verbose=args.verbose)
+        results.append(('ServerChan(微信)', ok))
+
+        # 企业微信 (可选)
+        ok2 = push_to_wecom_bot(report, verbose=args.verbose)
+        if ok2:
+            results.append(('企微机器人', ok2))
+
+        success_count = sum(1 for _, ok in results if ok)
+        print(f'✅ 推送完成: {success_count}/{len(results)} 通道成功')
+    else:
+        print(f'⏭️ 跳过推送（--save-only）')
+
+    # 4. 打印摘要
+    if args.verbose:
+        print('\n' + '=' * 50)
+        print('📋 报告摘要:')
+        print(report[:800] + '...')
+
+
+if __name__ == '__main__':
+    main()

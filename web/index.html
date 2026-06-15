@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日金融情报 | 2026年6月11日</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0b0f;
+    --bg-secondary: #111317;
+    --bg-card: #16181e;
+    --bg-card-hover: #1c1f28;
+    --border-color: #1e2230;
+    --border-accent: #2a2f42;
+    --text-primary: #e8eaf0;
+    --text-secondary: #9098a8;
+    --text-muted: #5a6270;
+    --gold: #d4a84b;
+    --gold-light: #f0d58c;
+    --gold-glow: rgba(212,168,75,0.15);
+    --green: #34d399;
+    --green-bg: rgba(52,211,153,0.1);
+    --red: #f87171;
+    --red-bg: rgba(248,113,113,0.1);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96,165,250,0.1);
+    --purple: #a78bfa;
+    --purple-bg: rgba(167,139,250,0.1);
+    --orange: #fb923c;
+    --orange-bg: rgba(251,146,60,0.1);
+    --gradient-gold: linear-gradient(135deg, #d4a84b, #f0d58c);
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.02);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Noto Serif SC', 'Inter', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Background grain ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-gold);
+    border-radius: 2px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--border-accent);
+    border-radius: 100px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .header-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .header h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .header h1 .gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    margin-top: 16px;
+  }
+
+  .header .date-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* ─── Market Overview Section ─── */
+  .section {
+    margin: 48px 0;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 16px;
+  }
+
+  .section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 16px;
+    background: var(--gradient-gold);
+    border-radius: 2px;
+  }
+
+  .market-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .market-grid { grid-template-columns: 1fr; }
+  }
+
+  .market-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .market-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-gold);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .market-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+  }
+
+  .market-card:hover::before {
+    opacity: 1;
+  }
+
+  .market-card .asset-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .market-card .asset-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .market-card .price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .market-card .change {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .change.up { color: var(--green); }
+  .change.down { color: var(--red); }
+  .change.flat { color: var(--text-muted); }
+
+  .market-card .signal {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .signal.bull { background: var(--green-bg); color: var(--green); }
+  .signal.neutral { background: var(--blue-bg); color: var(--blue); }
+  .signal.bear { background: var(--red-bg); color: var(--red); }
+  .signal.watch { background: var(--orange-bg); color: var(--orange); }
+  .signal.gold-signal { background: var(--gold-glow); color: var(--gold); }
+
+  /* ─── Deep Analysis Cards ─── */
+  .analysis-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .analysis-card:hover {
+    border-color: var(--border-accent);
+  }
+
+  .analysis-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .analysis-card .card-header .icon {
+    font-size: 28px;
+  }
+
+  .analysis-card .card-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .analysis-card .card-header .tag {
+    margin-left: auto;
+    padding: 4px 14px;
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tag.up { background: var(--green-bg); color: var(--green); }
+  .tag.flat { background: var(--blue-bg); color: var(--blue); }
+  .tag.watch { background: var(--orange-bg); color: var(--orange); }
+  .tag.gold-tag { background: var(--gold-glow); color: var(--gold); }
+
+  /* Data table inside cards */
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .data-item {
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+  }
+
+  .data-item .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .data-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .data-item .value.gold-text { color: var(--gold); }
+
+  /* Price Levels Table */
+  .levels-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+  }
+
+  .levels-table th {
+    text-align: left;
+    padding: 10px 16px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .levels-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .levels-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .levels-table .num {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+  }
+
+  .levels-table .pct {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-secondary);
+    text-align: right;
+  }
+
+  .levels-table .highlight {
+    color: var(--gold);
+  }
+
+  /* Events list */
+  .events-list {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+
+  .events-list li {
+    position: relative;
+    padding: 10px 0 10px 28px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .events-list li:last-child { border-bottom: none; }
+
+  .events-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 4px;
+    color: var(--gold);
+    font-size: 14px;
+  }
+
+  /* Judgment section */
+  .judgment {
+    padding: 20px 24px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border-left: 3px solid var(--gold);
+    margin-top: 16px;
+  }
+
+  .judgment .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .judgment p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .judgment .focus-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .judgment .focus-points span {
+    padding: 4px 12px;
+    background: rgba(212,168,75,0.1);
+    border: 1px solid rgba(212,168,75,0.15);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--gold-light);
+  }
+
+  /* ─── Gold Bull/Bear ─── */
+  .bull-bear {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .bull-bear { grid-template-columns: 1fr; }
+  }
+
+  .bull-box, .bear-box {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .bull-box {
+    background: var(--green-bg);
+    border: 1px solid rgba(52,211,153,0.15);
+  }
+
+  .bear-box {
+    background: var(--red-bg);
+    border: 1px solid rgba(248,113,113,0.15);
+  }
+
+  .bull-box .bb-title, .bear-box .bb-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .bull-box .bb-title { color: var(--green); }
+  .bear-box .bb-title { color: var(--red); }
+
+  .bull-box ul, .bear-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .bull-box li, .bear-box li {
+    position: relative;
+    padding: 6px 0 6px 18px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .bull-box li::before { content: '✓'; position: absolute; left: 0; color: var(--green); }
+  .bear-box li::before { content: '✗'; position: absolute; left: 0; color: var(--red); }
+
+  /* Background context (gold) */
+  .bg-context {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .bg-context .chip {
+    padding: 6px 14px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  /* ─── Tomorrow Outlook ─── */
+  .outlook-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .outlook-grid { grid-template-columns: 1fr; }
+  }
+
+  .outlook-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .outlook-item:hover {
+    border-color: var(--border-accent);
+    background: var(--bg-card-hover);
+  }
+
+  .outlook-item .oi-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .outlook-item .oi-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .outlook-item .oi-content p {
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    padding: 40px 0 80px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  .footer a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* ─── Deerflow Branding ─── */
+  .deerflow-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(10, 11, 15, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .deerflow-badge:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(10, 11, 15, 0.95);
+    transform: translateY(-1px);
+  }
+
+  .deerflow-badge .df-icon {
+    font-size: 12px;
+  }
+
+  /* ─── Animations ─── */
+  .animate-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .animate-in:nth-child(1) { animation-delay: 0.05s; }
+  .animate-in:nth-child(2) { animation-delay: 0.1s; }
+  .animate-in:nth-child(3) { animation-delay: 0.15s; }
+  .animate-in:nth-child(4) { animation-delay: 0.2s; }
+  .animate-in:nth-child(5) { animation-delay: 0.25s; }
+  .animate-in:nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ─── Scrollbar ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-accent); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header animate-in">
+    <div class="header-badge">
+      <span class="dot"></span>
+      Market Intelligence
+    </div>
+    <h1>每日金融<span class="gold">情报</span></h1>
+    <p class="subtitle">深度研判 · 数据驱动决策</p>
+    <p class="date-line">2026年6月11日 周四 · 第24期</p>
+  </header>
+
+  <!-- ═══ MARKET OVERVIEW ═══ -->
+  <section class="section animate-in">
+    <h3 class="section-title">今日市场全景</h3>
+    <div class="market-grid">
+      <!-- 腾讯 -->
+      <div class="market-card">
+        <div class="asset-icon">📈</div>
+        <div class="asset-name">腾讯控股</div>
+        <div class="price">469.8</div>
+        <div class="change up">+0.90%</div>
+        <div class="signal bull">微涨 · 盘整</div>
+      </div>
+      <!-- 黄金 -->
+      <div class="market-card">
+        <div class="asset-icon">🥇</div>
+        <div class="asset-name">XAU/USD</div>
+        <div class="price">$4,098</div>
+        <div class="change flat">—</div>
+        <div class="signal gold-signal">历史高位区域</div>
+      </div>
+      <!-- 汇率 -->
+      <div class="market-card">
+        <div class="asset-icon">💱</div>
+        <div class="asset-name">USD/CNY</div>
+        <div class="price">6.7893</div>
+        <div class="change flat">—</div>
+        <div class="signal watch">人民币偏强</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TENCENT ANALYSIS ═══ -->
+  <section class="section animate-in">
+    <h3 class="section-title">深度分析</h3>
+
+    <div class="analysis-card">
+      <div class="card-header">
+        <span class="icon">📈</span>
+        <h2>腾讯控股 <span style="font-weight:400;color:var(--text-muted)">00700.HK</span></h2>
+        <span class="tag flat">窄幅整理</span>
+      </div>
+
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">最新收盘</div>
+          <div class="value">469.8 <span style="font-size:12px;color:var(--text-muted)">港元</span></div>
+        </div>
+        <div class="data-item">
+          <div class="label">涨跌幅</div>
+          <div class="value" style="color:var(--green)">+0.90%</div>
+        </div>
+        <div class="data-item">
+          <div class="label">涨跌值</div>
+          <div class="value" style="color:var(--green)">+4.2</div>
+        </div>
+        <div class="data-item">
+          <div class="label">今日区间</div>
+          <div class="value" style="font-size:14px">469.8 — 469.8</div>
+        </div>
+        <div class="data-item">
+          <div class="label">昨收</div>
+          <div class="value">465.6</div>
+        </div>
+        <div class="data-item">
+          <div class="label">开盘</div>
+          <div class="value">469.8</div>
+        </div>
+      </div>
+
+      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">📍 关键价位</h4>
+      <table class="levels-table">
+        <tr><th>基准</th><th>价位</th><th>距离现价</th></tr>
+        <tr><td>52周高点</td><td class="num">675.1</td><td class="pct">-30.4%</td></tr>
+        <tr><td>52周低点</td><td class="num">420.4</td><td class="pct highlight">+11.7%</td></tr>
+        <tr><td>高盛目标价</td><td class="num highlight">700</td><td class="pct highlight">+49.0%</td></tr>
+      </table>
+
+      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">🔥 近期催化</h4>
+      <ul class="events-list">
+        <li>6/2 腾讯单日暴涨10.46%，创5年最大涨幅，微信AI Agent概念引爆</li>
+        <li>6/6 腾讯云发布「效率智能体工具集」，覆盖20+垂直场景</li>
+        <li>6/6 微信宣布联合华为/荣耀/小米等手机厂商开放A2A能力</li>
+        <li>6/6-6/8 腾讯连续多日AI主题密集发声，汤道生回应「慢了」质疑</li>
+      </ul>
+
+      <div class="judgment">
+        <div class="label">📌 核心研判</div>
+        <p>今日窄幅整理，振幅0.0%。当前股价距52周高点(675.1)还有30%空间，距52周低点(420.4)已反弹11%。</p>
+        <p style="margin-top:8px">腾讯近期AI叙事密集爆发（微信Agent、A2A开放、智能体工具集），是股价从420低点反弹的核心驱动力。6/2单日暴涨10%后进入消化整理阶段。</p>
+        <div class="focus-points">
+          <span>① AI产品落地进度</span>
+          <span>② 回购力度延续性</span>
+          <span>③ 恒生科技指数联动</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GOLD ANALYSIS ═══ -->
+  <section class="section animate-in">
+    <div class="analysis-card">
+      <div class="card-header">
+        <span class="icon">🥇</span>
+        <h2>黄金 <span style="font-weight:400;color:var(--text-muted)">XAU/USD</span></h2>
+        <span class="tag gold-tag">历史高位区域</span>
+      </div>
+
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">最新价格</div>
+          <div class="value gold-text">$4,098.30</div>
+        </div>
+        <div class="data-item">
+          <div class="label">数据源</div>
+          <div class="value" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">gold-api.com</div>
+        </div>
+      </div>
+
+      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">📊 宏观背景</h4>
+      <div class="bg-context">
+        <span class="chip">📈 2025年涨幅+60% 创45年纪录</span>
+        <span class="chip">💰 年初冲高$5,600+ 后大幅回调</span>
+        <span class="chip">🏦 央行上半年净购123吨</span>
+        <span class="chip">🎯 瑞银目标$6,200</span>
+        <span class="chip">📋 高盛目标$5,400</span>
+        <span class="chip">⚠️ 花旗提示回调风险</span>
+      </div>
+
+      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">⚖️ 多空博弈</h4>
+      <div class="bull-bear">
+        <div class="bull-box">
+          <div class="bb-title">🆙 看多逻辑</div>
+          <ul>
+            <li>美联储降息周期推进，实际利率下行</li>
+            <li>全球央行"去美元化"趋势不减</li>
+            <li>中东/俄乌地缘风险持续提供避险支撑</li>
+          </ul>
+        </div>
+        <div class="bear-box">
+          <div class="bb-title">🔻 看空逻辑</div>
+          <ul>
+            <li>鹰派美联储主席提名限制降息空间</li>
+            <li>前期"非理性超涨"需要时间消化</li>
+            <li>美伊局势若缓和将削弱避险需求</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="judgment">
+        <div class="label">📌 核心研判</div>
+        <p>金价从年初$5,600+高点回调至$4,000附近企稳，属于大涨后的健康调整。中长期看多逻辑未破坏（央行购金、去美元化、降息周期），但短期波动加剧，$4,000-4,500成为新的震荡中枢。</p>
+        <div class="focus-points">
+          <span>🔍 本周美国就业数据</span>
+          <span>🌍 美伊谈判进展</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXCHANGE RATE ═══ -->
+  <section class="section animate-in">
+    <div class="analysis-card">
+      <div class="card-header">
+        <span class="icon">💱</span>
+        <h2>美元兑人民币</h2>
+        <span class="tag watch">人民币偏强</span>
+      </div>
+
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">在岸参考</div>
+          <div class="value">6.7893</div>
+        </div>
+        <div class="data-item">
+          <div class="label">数据源</div>
+          <div class="value" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">ExchangeRate-API</div>
+        </div>
+        <div class="data-item" style="grid-column: span 2;">
+          <div class="label">12个月走势</div>
+          <div class="value" style="color:var(--green);font-size:14px">人民币升值约5.53%</div>
+        </div>
+      </div>
+
+      <div class="judgment">
+        <div class="label">📌 核心研判</div>
+        <p>模型预测本季度末 6.76，12个月后 6.71（预计小幅升值）。短期缺乏单边驱动，关注央行中间价设定方向和中美利差变化。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TOMORROW OUTLOOK ═══ -->
+  <section class="section animate-in">
+    <h3 class="section-title">明日关注</h3>
+    <div class="outlook-grid">
+      <div class="outlook-item">
+        <span class="oi-icon">📊</span>
+        <div class="oi-content">
+          <h4>美国经济数据公布</h4>
+          <p>影响降息预期 → 黄金/汇率波动</p>
+        </div>
+      </div>
+      <div class="outlook-item">
+        <span class="oi-icon">🏢</span>
+        <div class="oi-content">
+          <h4>腾讯回购公告</h4>
+          <p>每日5亿回购是否延续</p>
+        </div>
+      </div>
+      <div class="outlook-item">
+        <span class="oi-icon">🌍</span>
+        <div class="oi-content">
+          <h4>美伊谈判进展</h4>
+          <p>地缘风险溢价 → 金价/油价</p>
+        </div>
+      </div>
+      <div class="outlook-item">
+        <span class="oi-icon">🏛️</span>
+        <div class="oi-content">
+          <h4>央行中间价</h4>
+          <p>人民币汇率政策信号</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer animate-in">
+    <p>数据来源：新浪财经 · Gold-API · ExchangeRate-API</p>
+    <p>报告生成：2026-06-11 09:24</p>
+    <p style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.15)">
+      ⚡ 数据仅供参考，不构成投资建议。市场有风险，决策需谨慎。
+    </p>
+  </footer>
+
+</div>
+
+<!-- Deerflow Branding -->
+<a href="https://deerflow.tech" target="_blank" class="deerflow-badge" title="Created By Deerflow">
+  <span class="df-icon">✦</span>
+  Deerflow
+</a>
+
+</body>
+</html>
