@@ -10,6 +10,7 @@ on:
     paths:
       - 'scripts/**'
       - 'run.sh'
+      - 'web/**'
       - '.github/workflows/**'
   # 也支持手动触发
   workflow_dispatch:
@@ -18,9 +19,17 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
+env:
+  VERCEL_ORG_ID: team_UFlSZ6tKv1vWOOXYU0PlVdeT
+  VERCEL_PROJECT_ID: prj_ZgDuvOfJxYOy4SFRnbtxMK4kLUu9
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -34,27 +43,24 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r ../requirements.txt
 
       - name: 💰 Fetch data & generate webpage
         run: |
-          bash run.sh --save-only
+          bash ../run.sh --save-only
         env:
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
 
-      - name: 🚀 Deploy to Vercel
+      - name: 🚀 Deploy to Vercel (Production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          # Install Vercel CLI
           npm install -g vercel@latest
-
-          # 部署 web/ 目录到 Vercel
-          vercel deploy \
-            --prebuilt \
-            --token "$VERCEL_TOKEN" \
-            --prod \
-            web/
+          # 链接到已有项目，避免创建新项目
+          vercel pull --yes --environment=production \
+            --token="$VERCEL_TOKEN"
+          vercel deploy --prod \
+            --token="$VERCEL_TOKEN"
 
       - name: ✅ Done
-        run: echo "✅ 部署完成！"
+        run: echo "✅ 部署完成！页面已更新 → https://web-sage-mu-13.vercel.app"
