@@ -26,9 +26,6 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: web
 
     steps:
       - name: 📥 Checkout
@@ -41,26 +38,31 @@ jobs:
           cache: 'pip'
 
       - name: 📦 Install dependencies
+        working-directory: ./
         run: |
           python -m pip install --upgrade pip
-          pip install -r ../requirements.txt
+          pip install -r requirements.txt
 
       - name: 💰 Fetch data & generate webpage
+        working-directory: ./
         run: |
-          bash ../run.sh --save-only
+          # 将项目根目录加入 Python 模块搜索路径
+          export PYTHONPATH="$PWD:$PYTHONPATH"
+          bash run.sh --save-only
         env:
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
 
       - name: 🚀 Deploy to Vercel (Production)
+        working-directory: web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npm install -g vercel@latest
-          # 链接到已有项目，避免创建新项目
           vercel pull --yes --environment=production \
             --token="$VERCEL_TOKEN"
           vercel deploy --prod \
             --token="$VERCEL_TOKEN"
 
       - name: ✅ Done
+        working-directory: ./
         run: echo "✅ 部署完成！页面已更新 → https://web-sage-mu-13.vercel.app"
