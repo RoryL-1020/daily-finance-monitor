@@ -35,6 +35,14 @@ echo ""
 cd "$SCRIPT_DIR"
 python3 scripts/push_report.py $VERBOSE $SAVE_ONLY
 
+# ── 第2步：生成网页看板 ──
+echo ""
+echo "╔═══════════════════════════════════╗"
+echo "║  🕸️  生成网页看板...              ║"
+echo "╚═══════════════════════════════════╝"
+python3 scripts/generate_web_data.py --skip-llm $VERBOSE
+echo "   ✅ 网页已更新: web/index.html"
+
 echo ""
 echo "╔═══════════════════════════════════╗"
 echo "║  ✅ 完成                         ║"

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日金融情报 | 2026年6月11日</title>
+<title>每日金融情报 | 2026年6月16日</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -312,6 +312,7 @@
   .tag.flat { background: var(--blue-bg); color: var(--blue); }
   .tag.watch { background: var(--orange-bg); color: var(--orange); }
   .tag.gold-tag { background: var(--gold-glow); color: var(--gold); }
+  .tag.down { background: var(--red-bg); color: var(--red); }
 
   /* Data table inside cards */
   .data-grid {
@@ -670,238 +671,269 @@
     </div>
     <h1>每日金融<span class="gold">情报</span></h1>
     <p class="subtitle">深度研判 · 数据驱动决策</p>
-    <p class="date-line">2026年6月11日 周四 · 第24期</p>
+    <p class="date-line">2026年6月16日 周二 · 第16期</p>
   </header>
 
   <!-- ═══ MARKET OVERVIEW ═══ -->
   <section class="section animate-in">
     <h3 class="section-title">今日市场全景</h3>
     <div class="market-grid">
-      <!-- 腾讯 -->
       <div class="market-card">
         <div class="asset-icon">📈</div>
         <div class="asset-name">腾讯控股</div>
-        <div class="price">469.8</div>
-        <div class="change up">+0.90%</div>
-        <div class="signal bull">微涨 · 盘整</div>
+        <div class="price">448.0</div>
+        <div class="change down">-2.52%</div>
+        <span class="signal bear">下跌 📉</span>
       </div>
-      <!-- 黄金 -->
       <div class="market-card">
         <div class="asset-icon">🥇</div>
         <div class="asset-name">XAU/USD</div>
-        <div class="price">$4,098</div>
+        <div class="price">$4,315</div>
         <div class="change flat">—</div>
-        <div class="signal gold-signal">历史高位区域</div>
+        <span class="signal bull">高位偏强 📈</span>
       </div>
-      <!-- 汇率 -->
       <div class="market-card">
         <div class="asset-icon">💱</div>
         <div class="asset-name">USD/CNY</div>
-        <div class="price">6.7893</div>
+        <div class="price">6.7719</div>
         <div class="change flat">—</div>
-        <div class="signal watch">人民币偏强</div>
+        <span class="signal bull">人民币偏强 📈</span>
       </div>
     </div>
   </section>
 
-  <!-- ═══ TENCENT ANALYSIS ═══ -->
-  <section class="section animate-in">
-    <h3 class="section-title">深度分析</h3>
+  <!-- ═══ MAIN ANALYSIS ═══ -->
+    <!-- ═══ TENCENT ANALYSIS ═══ -->
+    <section class="section">
+      <h3 class="section-title">深度分析</h3>
+      <div class="analysis-card">
+        <div class="card-header">
+          <span class="icon">📈</span>
+          <h2>腾讯控股 <span style="font-weight:400;color:var(--text-muted)">00700.HK</span></h2>
+          <span class="tag down">下跌 📉</span>
+        </div>
 
-    <div class="analysis-card">
-      <div class="card-header">
-        <span class="icon">📈</span>
-        <h2>腾讯控股 <span style="font-weight:400;color:var(--text-muted)">00700.HK</span></h2>
-        <span class="tag flat">窄幅整理</span>
-      </div>
+        <div class="data-grid">
+          <div class="data-item">
+            <div class="label">最新收盘</div>
+            <div class="value">448.0 <span style="font-size:12px;color:var(--text-muted)">港元</span></div>
+          </div>
+          <div class="data-item">
+            <div class="label">涨跌幅</div>
+            <div class="value" style="color:var(--red)">-2.52%</div>
+          </div>
+          <div class="data-item">
+            <div class="label">涨跌值</div>
+            <div class="value" style="color:var(--red)">-11.6</div>
+          </div>
+          <div class="data-item">
+            <div class="label">今日区间</div>
+            <div class="value" style="font-size:14px">445.4 — 462.6</div>
+          </div>
+          <div class="data-item">
+            <div class="label">昨收</div>
+            <div class="value">459.6</div>
+          </div>
+          <div class="data-item">
+            <div class="label">开盘</div>
+            <div class="value">462.6</div>
+          </div>
+        </div>
 
-      <div class="data-grid">
-        <div class="data-item">
-          <div class="label">最新收盘</div>
-          <div class="value">469.8 <span style="font-size:12px;color:var(--text-muted)">港元</span></div>
-        </div>
-        <div class="data-item">
-          <div class="label">涨跌幅</div>
-          <div class="value" style="color:var(--green)">+0.90%</div>
-        </div>
-        <div class="data-item">
-          <div class="label">涨跌值</div>
-          <div class="value" style="color:var(--green)">+4.2</div>
-        </div>
-        <div class="data-item">
-          <div class="label">今日区间</div>
-          <div class="value" style="font-size:14px">469.8 — 469.8</div>
-        </div>
-        <div class="data-item">
-          <div class="label">昨收</div>
-          <div class="value">465.6</div>
-        </div>
-        <div class="data-item">
-          <div class="label">开盘</div>
-          <div class="value">469.8</div>
-        </div>
-      </div>
+        <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">📍 关键价位</h4>
+        <table class="levels-table">
+          <tr><th>基准</th><th>价位</th><th>距离现价</th></tr>
+          <tr><td>52周高点</td><td class="num">675.1</td><td class="pct">-33.6%</td></tr>
+          <tr><td>52周低点</td><td class="num">420.4</td><td class="pct highlight">+6.2%</td></tr>
+          <tr><td>高盛目标价</td><td class="num highlight">700</td><td class="pct highlight">+56%</td></tr>
+        </table>
 
-      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">📍 关键价位</h4>
-      <table class="levels-table">
-        <tr><th>基准</th><th>价位</th><th>距离现价</th></tr>
-        <tr><td>52周高点</td><td class="num">675.1</td><td class="pct">-30.4%</td></tr>
-        <tr><td>52周低点</td><td class="num">420.4</td><td class="pct highlight">+11.7%</td></tr>
-        <tr><td>高盛目标价</td><td class="num highlight">700</td><td class="pct highlight">+49.0%</td></tr>
-      </table>
+        <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">🔥 近期催化</h4>
+        <ul class="events-list">
+          <li>6/2 腾讯单日暴涨10.46%，创5年最大涨幅，微信AI Agent概念引爆</li>
+          <li>6/6 腾讯云发布「效率智能体工具集」，覆盖20+垂直场景</li>
+          <li>6/6 微信宣布联合华为/荣耀/小米等手机厂商开放A2A能力</li>
+        </ul>
 
-      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">🔥 近期催化</h4>
-      <ul class="events-list">
-        <li>6/2 腾讯单日暴涨10.46%，创5年最大涨幅，微信AI Agent概念引爆</li>
-        <li>6/6 腾讯云发布「效率智能体工具集」，覆盖20+垂直场景</li>
-        <li>6/6 微信宣布联合华为/荣耀/小米等手机厂商开放A2A能力</li>
-        <li>6/6-6/8 腾讯连续多日AI主题密集发声，汤道生回应「慢了」质疑</li>
-      </ul>
+        <div class="judgment">
+          <div class="label">📌 核心研判</div>
+          
+          <p style="margin-top:8px">448.0距52周高点(675.1)还有34%空间，距52周低点(420.4)已反弹6%。</p>
+          <div class="focus-points">
+            <span>① AI产品落地进度</span>
+            <span>② 回购力度延续性</span>
+            <span>③ 恒生科技指数联动</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ═══ GOLD ANALYSIS ═══ -->
+    <section class="section">
+      <div class="analysis-card">
+        <div class="card-header">
+          <span class="icon">🥇</span>
+          <h2>黄金 <span style="font-weight:400;color:var(--text-muted)">XAU/USD</span></h2>
+          <span class="tag gold-tag">高位偏强 📈</span>
+        </div>
 
-      <div class="judgment">
-        <div class="label">📌 核心研判</div>
-        <p>今日窄幅整理，振幅0.0%。当前股价距52周高点(675.1)还有30%空间，距52周低点(420.4)已反弹11%。</p>
-        <p style="margin-top:8px">腾讯近期AI叙事密集爆发（微信Agent、A2A开放、智能体工具集），是股价从420低点反弹的核心驱动力。6/2单日暴涨10%后进入消化整理阶段。</p>
-        <div class="focus-points">
-          <span>① AI产品落地进度</span>
-          <span>② 回购力度延续性</span>
-          <span>③ 恒生科技指数联动</span>
+        <div class="data-grid">
+          <div class="data-item">
+            <div class="label">最新价格</div>
+            <div class="value gold-text">$4,314.70</div>
+          </div>
+          <div class="data-item">
+            <div class="label">数据源</div>
+            <div class="value" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">gold-api.com</div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ═══ GOLD ANALYSIS ═══ -->
-  <section class="section animate-in">
-    <div class="analysis-card">
-      <div class="card-header">
-        <span class="icon">🥇</span>
-        <h2>黄金 <span style="font-weight:400;color:var(--text-muted)">XAU/USD</span></h2>
-        <span class="tag gold-tag">历史高位区域</span>
-      </div>
+        <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">📊 宏观背景</h4>
+        <div class="bg-context">
+          <span class="chip">📈 2025年涨幅+60% 创45年纪录</span>
+          <span class="chip">💰 年初冲高$5,600+ 后大幅回调</span>
+          <span class="chip">🏦 央行上半年净购123吨</span>
+          <span class="chip">🎯 瑞银目标$6,200</span>
+          <span class="chip">📋 高盛目标$5,400</span>
+          <span class="chip">⚠️ 花旗提示回调风险</span>
+        </div>
 
-      <div class="data-grid">
-        <div class="data-item">
-          <div class="label">最新价格</div>
-          <div class="value gold-text">$4,098.30</div>
+        <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">⚖️ 多空博弈</h4>
+        <div class="bull-bear">
+          <div class="bull-box">
+            <div class="bb-title">🆙 看多逻辑</div>
+            <ul>
+              <li>美联储降息周期推进，实际利率下行</li>
+              <li>全球央行"去美元化"趋势不减</li>
+              <li>中东/俄乌地缘风险持续提供避险支撑</li>
+            </ul>
+          </div>
+          <div class="bear-box">
+            <div class="bb-title">🔻 看空逻辑</div>
+            <ul>
+              <li>鹰派美联储主席提名限制降息空间</li>
+              <li>前期"非理性超涨"需要时间消化</li>
+              <li>美伊局势若缓和将削弱避险需求</li>
+            </ul>
+          </div>
         </div>
-        <div class="data-item">
-          <div class="label">数据源</div>
-          <div class="value" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">gold-api.com</div>
-        </div>
-      </div>
 
-      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">📊 宏观背景</h4>
-      <div class="bg-context">
-        <span class="chip">📈 2025年涨幅+60% 创45年纪录</span>
-        <span class="chip">💰 年初冲高$5,600+ 后大幅回调</span>
-        <span class="chip">🏦 央行上半年净购123吨</span>
-        <span class="chip">🎯 瑞银目标$6,200</span>
-        <span class="chip">📋 高盛目标$5,400</span>
-        <span class="chip">⚠️ 花旗提示回调风险</span>
+        <div class="judgment">
+          <div class="label">📌 核心研判</div>
+          
+          <p>金价从年初$5,600+高点回调至$4,315附近企稳，属于大涨后的健康调整。中长期看多逻辑未破坏（央行购金、去美元化、降息周期）。</p>
+          <div class="focus-points">
+            <span>🔍 本周美国就业数据</span>
+            <span>🌍 美伊谈判进展</span>
+          </div>
+        </div>
       </div>
+    </section>
+    <!-- ═══ EXCHANGE RATE ═══ -->
+    <section class="section">
+      <div class="analysis-card">
+        <div class="card-header">
+          <span class="icon">💱</span>
+          <h2>美元兑人民币</h2>
+          <span class="tag up">人民币偏强</span>
+        </div>
 
-      <h4 style="font-size:13px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase">⚖️ 多空博弈</h4>
-      <div class="bull-bear">
-        <div class="bull-box">
-          <div class="bb-title">🆙 看多逻辑</div>
-          <ul>
-            <li>美联储降息周期推进，实际利率下行</li>
-            <li>全球央行"去美元化"趋势不减</li>
-            <li>中东/俄乌地缘风险持续提供避险支撑</li>
-          </ul>
+        <div class="data-grid">
+          <div class="data-item">
+            <div class="label">在岸参考</div>
+            <div class="value">6.7719</div>
+          </div>
+          <div class="data-item">
+            <div class="label">数据源</div>
+            <div class="value" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">ExchangeRate-API</div>
+          </div>
+          <div class="data-item" style="grid-column: span 2;">
+            <div class="label">12个月走势</div>
+            <div class="value" style="color:var(--green);font-size:14px">人民币升值约5.53%</div>
+          </div>
         </div>
-        <div class="bear-box">
-          <div class="bb-title">🔻 看空逻辑</div>
-          <ul>
-            <li>鹰派美联储主席提名限制降息空间</li>
-            <li>前期"非理性超涨"需要时间消化</li>
-            <li>美伊局势若缓和将削弱避险需求</li>
-          </ul>
-        </div>
-      </div>
 
-      <div class="judgment">
-        <div class="label">📌 核心研判</div>
-        <p>金价从年初$5,600+高点回调至$4,000附近企稳，属于大涨后的健康调整。中长期看多逻辑未破坏（央行购金、去美元化、降息周期），但短期波动加剧，$4,000-4,500成为新的震荡中枢。</p>
-        <div class="focus-points">
-          <span>🔍 本周美国就业数据</span>
-          <span>🌍 美伊谈判进展</span>
+        <div class="judgment">
+          <div class="label">📌 核心研判</div>
+          <p>美元兑人民币 6.7719，处于人民币偏强区间。模型预测本季度末 6.76，12个月后 6.71（小幅升值预期）。</p>
+          <p style="margin-top:8px">短期缺乏单边驱动，关注央行中间价设定方向和中美利差变化。</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══ EXCHANGE RATE ═══ -->
-  <section class="section animate-in">
-    <div class="analysis-card">
-      <div class="card-header">
-        <span class="icon">💱</span>
-        <h2>美元兑人民币</h2>
-        <span class="tag watch">人民币偏强</span>
-      </div>
 
-      <div class="data-grid">
-        <div class="data-item">
-          <div class="label">在岸参考</div>
-          <div class="value">6.7893</div>
-        </div>
-        <div class="data-item">
-          <div class="label">数据源</div>
-          <div class="value" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">ExchangeRate-API</div>
-        </div>
-        <div class="data-item" style="grid-column: span 2;">
-          <div class="label">12个月走势</div>
-          <div class="value" style="color:var(--green);font-size:14px">人民币升值约5.53%</div>
-        </div>
+  <!-- ═══ EXTENDED MARKET ═══ -->
+    <!-- ═══ EXTENDED MARKET ═══ -->
+    <section class="section">
+      <h3 class="section-title">其他市场</h3>
+      <div class="market-grid">
+              <div class="market-card">
+        <div class="asset-icon">🇺🇸</div>
+        <div class="asset-name">标普500</div>
+        <div class="price">7,554</div>
+        <div class="change up">+1.65%</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">昨收 7,431</div>
+      </div>      <div class="market-card">
+        <div class="asset-icon">🇨🇳</div>
+        <div class="asset-name">沪深300</div>
+        <div class="price">4,902.3</div>
+        <div class="change up">+0.22%</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">昨收 4,891.7</div>
+      </div>      <div class="market-card">
+        <div class="asset-icon">₿</div>
+        <div class="asset-name">比特币</div>
+        <div class="price">$65,842</div>
+        <div class="change flat">—</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">买/卖 65,842</div>
+      </div>      <div class="market-card">
+        <div class="asset-icon">🏦</div>
+        <div class="asset-name">10年美债</div>
+        <div class="price">4.47%</div>
+        <div class="change flat">—</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">日期 06/15/2026</div>
       </div>
+      </div>
+    </section>
 
-      <div class="judgment">
-        <div class="label">📌 核心研判</div>
-        <p>模型预测本季度末 6.76，12个月后 6.71（预计小幅升值）。短期缺乏单边驱动，关注央行中间价设定方向和中美利差变化。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ TOMORROW OUTLOOK ═══ -->
-  <section class="section animate-in">
-    <h3 class="section-title">明日关注</h3>
-    <div class="outlook-grid">
-      <div class="outlook-item">
-        <span class="oi-icon">📊</span>
-        <div class="oi-content">
-          <h4>美国经济数据公布</h4>
-          <p>影响降息预期 → 黄金/汇率波动</p>
+  <!-- ═══ OUTLOOK ═══ -->
+    <!-- ═══ TOMORROW OUTLOOK ═══ -->
+    <section class="section">
+      <h3 class="section-title">明日关注</h3>
+      <div class="outlook-grid">
+        <div class="outlook-item">
+          <span class="oi-icon">📊</span>
+          <div class="oi-content">
+            <h4>美国经济数据公布</h4>
+            <p>影响降息预期 → 黄金/汇率波动</p>
+          </div>
+        </div>
+        <div class="outlook-item">
+          <span class="oi-icon">🏢</span>
+          <div class="oi-content">
+            <h4>腾讯回购公告</h4>
+            <p>每日5亿回购是否延续</p>
+          </div>
+        </div>
+        <div class="outlook-item">
+          <span class="oi-icon">🌍</span>
+          <div class="oi-content">
+            <h4>美伊谈判进展</h4>
+            <p>地缘风险溢价 → 金价/油价</p>
+          </div>
+        </div>
+        <div class="outlook-item">
+          <span class="oi-icon">🏛️</span>
+          <div class="oi-content">
+            <h4>央行中间价</h4>
+            <p>人民币汇率政策信号</p>
+          </div>
         </div>
       </div>
-      <div class="outlook-item">
-        <span class="oi-icon">🏢</span>
-        <div class="oi-content">
-          <h4>腾讯回购公告</h4>
-          <p>每日5亿回购是否延续</p>
-        </div>
-      </div>
-      <div class="outlook-item">
-        <span class="oi-icon">🌍</span>
-        <div class="oi-content">
-          <h4>美伊谈判进展</h4>
-          <p>地缘风险溢价 → 金价/油价</p>
-        </div>
-      </div>
-      <div class="outlook-item">
-        <span class="oi-icon">🏛️</span>
-        <div class="oi-content">
-          <h4>央行中间价</h4>
-          <p>人民币汇率政策信号</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
   <!-- ═══ FOOTER ═══ -->
   <footer class="footer animate-in">
-    <p>数据来源：新浪财经 · Gold-API · ExchangeRate-API</p>
-    <p>报告生成：2026-06-11 09:24</p>
+    <p>数据来源：ExchangeRate-API · US Treasury.gov · blockchain.info · gold-api.com · 东方财富 · 新浪财经</p>
+    <p>报告生成：2026-06-16 10:40</p>
     <p style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.15)">
       ⚡ 数据仅供参考，不构成投资建议。市场有风险，决策需谨慎。
     </p>
