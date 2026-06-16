@@ -1,0 +1,10 @@
+# 环境变量
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 每日数据报告（GitHub Actions 中动态生成）
+reports/
