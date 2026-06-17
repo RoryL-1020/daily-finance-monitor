@@ -43,14 +43,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 💰 Fetch data & generate webpage
+      - name: 💰 Fetch data & generate report & push
         working-directory: ./
         run: |
           # 将项目根目录加入 Python 模块搜索路径
           export PYTHONPATH="$PWD:$PYTHONPATH"
-          bash run.sh --save-only
+          bash run.sh
         env:
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          WECOM_BOT_URL: ${{ secrets.WECOM_BOT_URL }}
 
       - name: 🚀 Deploy to Vercel (Production)
         working-directory: web
